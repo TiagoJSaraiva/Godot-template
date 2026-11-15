@@ -78,9 +78,14 @@ if ($workspaceTarget -ne $workspaceTemplate) {
 }
 Write-Host "OK: workspace $slug.code-workspace" -ForegroundColor Green
 
-# 3. O README do modelo é guia de setup; o projeto novo começa com um README próprio
+# 3. README.md e LEIA-ME.md do modelo são guias de setup; o projeto novo começa com um README próprio
 [IO.File]::WriteAllText((Join-Path $root "README.md"), "# $Name`n", $utf8NoBom)
 Write-Host "OK: README.md do projeto criado" -ForegroundColor Green
+$leiaMe = Join-Path $root "LEIA-ME.md"
+if (Test-Path $leiaMe) {
+    Remove-Item $leiaMe
+    Write-Host "OK: LEIA-ME.md do modelo removido" -ForegroundColor Green
+}
 
 Remove-Item $PSCommandPath
 
