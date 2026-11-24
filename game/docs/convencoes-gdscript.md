@@ -41,9 +41,11 @@ var jumps_left := MAX_JUMPS            # := só quando o tipo é óbvio pelo lad
 var targets: Array[Enemy] = []
 var scores: Dictionary[String, int] = {}
 
+## Tira `amount` da vida; `source` é quem causou o dano.
 func apply_damage(amount: int, source: Node2D) -> void:
 	pass
 
+## Devolve se a vida ainda está acima de zero.
 func is_alive() -> bool:
 	return _health > 0
 ```
@@ -86,7 +88,7 @@ func is_alive() -> bool:
 - Um componente não conhece quem o usa: recebe valores por `@export` ou por método e informa por sinal. Ele pode depender de outro componente via `@export` tipado (ver "Comunicação entre nós"), mas nunca do script do pai.
 - Componentes usados por mais de uma feature ficam em `components/`; os exclusivos de uma feature ficam na pasta dela.
 - Variações de conteúdo (tipos de inimigo, itens, upgrades) são dados em `Resource` (`.tres`), não ramos `if`/`match` no código. Adicionar uma variação não deve exigir editar lógica existente.
-- Script passando de ~200 linhas é sinal de alerta. Código já existente que viola estas regras não é refatorado sem pedido: aponte e proponha a divisão no plano ou no resumo.
+- Script passando de ~200 linhas de código (sem contar comentários e linhas em branco) é sinal de alerta. Código já existente que viola estas regras não é refatorado sem pedido: aponte e proponha a divisão no plano ou no resumo.
 
 ## Valores e configuração
 
@@ -103,6 +105,19 @@ func is_alive() -> bool:
 
 ## Comentários
 
-- `##` para documentar classes e métodos públicos (aparece na ajuda do editor).
-- `#` comum só para explicar **por quê**: uma regra de design, um contorno de bug, um valor não óbvio.
-- Nada de comentário que repete o código.
+- `##` em todas as classes e em **toda função** fora de `test/` e `addons/`, inclusive privadas, virtuais e callbacks (decisão 0011). Aparece no hover e na ajuda do editor. O check reprova função sem ele.
+- O `##` da função é o contrato para quem chama: começa com um verbo e diz o que ela faz ou devolve, com efeitos, unidades e pré-condições. Uma regra de design que afeta quem chama também entra nele.
+- `#` comum, no corpo, só para explicar **por quê**: uma regra de design, um contorno de bug, um valor não óbvio.
+- Nada de comentário que repete o código. Em função curta, diga o que o nome não diz:
+
+```gdscript
+# Não vale: repete o nome.
+## Aplica dano.
+func apply_damage(amount: int) -> void:
+
+# Vale: diz o efeito.
+## Tira `amount` da vida, sem passar de zero, e emite `died` quando ela chega a zero.
+func apply_damage(amount: int) -> void:
+```
+
+- Alterou uma função (assinatura ou corpo): revise o `##` no mesmo passo (decisão 0011). O check compara com o HEAD e reprova a função alterada cujo `##` não mudou. Se ele continua correto (correção de bug, refatoração), confirme com `scripts/check-doc-review.ps1 -Reviewed "<arquivo>::<função>"`; mexer de novo na função invalida a confirmação.

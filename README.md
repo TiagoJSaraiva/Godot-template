@@ -22,7 +22,7 @@ godot-template\
     .claude\  .gemini\  commands, hook and settings for each agent
     .mcp.json           godot MCP (run the game and read the console)
     docs\               project memory: status, architecture, systems, decisions
-    scripts\            check.ps1 (verification pipeline) and check-godot-version.ps1
+    scripts\            check.ps1 (verification pipeline) and the steps it calls
     test\               gdUnit4 tests (unit\ and scenes\)
     addons\gdUnit4\     gdUnit4 6.2.0
 ```
@@ -101,7 +101,7 @@ Git rules (decision `0010`; details in the **Git** section of `game\AGENTS.md`):
 ## After setup
 
 - `game\docs\status.md` already describes the starting point. The next step is defining the game's scope in `game\docs\arquitetura.md`.
-- Decisions `0001`–`0010` in `game\docs\decisoes\` apply to every project created from the template. Change them with a new decision instead of editing the old ones.
+- Decisions `0001`–`0011` in `game\docs\decisoes\` apply to every project created from the template. Change them with a new decision instead of editing the old ones.
 - `notes\` is free-form (GDD, images, links). Agents use `game\docs\` as their memory.
 
 ## Updating the Godot version
@@ -114,4 +114,5 @@ Git rules (decision `0010`; details in the **Git** section of `game\AGENTS.md`):
 - **Black game window**: on this machine, Vulkan falls back to Mesa Dozen and does not render. Keep `rendering_device/driver.windows="d3d12"` in `project.godot`.
 - **`ERROR: Remote Debugger ... port` in the test output**: known noise, not a failure.
 - **`gdformat` not found**: Python's `Scripts` folder must be on `PATH`.
+- **Check reports a function whose `##` was not reviewed**: the function changed and its doc comment did not. Update the `##` or, if it is still correct, confirm it with the command the check suggests (`scripts/check-doc-review.ps1 -Reviewed "<file>::<function>"`). Decision `0011`.
 - **`/fim` does not push**: check that the remote exists (`git remote -v`) and that the branch is `main` (`git branch --show-current`). Without `origin`, commits stay local.

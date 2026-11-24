@@ -20,7 +20,7 @@ godot-template\
     .claude\  .gemini\  comandos, hook e configurações de cada agente
     .mcp.json           MCP godot (rodar o jogo e ler o console)
     docs\               memória do projeto: status, arquitetura, sistemas, decisões
-    scripts\            check.ps1 (pipeline de verificação) e check-godot-version.ps1
+    scripts\            check.ps1 (pipeline de verificação) e as etapas que ele chama
     test\               testes gdUnit4 (unit\ e scenes\)
     addons\gdUnit4\     gdUnit4 6.2.0
 ```
@@ -99,7 +99,7 @@ Regras de git (decisão `0010`; detalhes na seção **Git** de `game\AGENTS.md`)
 ## Depois do setup
 
 - `game\docs\status.md` já descreve o ponto de partida. O próximo passo é definir o escopo do jogo em `game\docs\arquitetura.md`.
-- As decisões `0001`–`0010` em `game\docs\decisoes\` valem para todo projeto criado pelo modelo. Mude-as com uma nova decisão, não editando as antigas.
+- As decisões `0001`–`0011` em `game\docs\decisoes\` valem para todo projeto criado pelo modelo. Mude-as com uma nova decisão, não editando as antigas.
 - `notes\` é livre (GDD, imagens, links). Os agentes usam `game\docs\` como memória.
 
 ## Atualizar a versão do Godot
@@ -112,4 +112,5 @@ Regras de git (decisão `0010`; detalhes na seção **Git** de `game\AGENTS.md`)
 - **Janela do jogo preta**: nesta máquina, o Vulkan cai no Mesa Dozen e não renderiza. Mantenha `rendering_device/driver.windows="d3d12"` em `project.godot`.
 - **`ERROR: Remote Debugger ... port` na saída dos testes**: ruído conhecido, não é falha.
 - **`gdformat` não encontrado**: a pasta `Scripts` do Python precisa estar no `PATH`.
+- **Check acusa função com o `##` sem revisão**: a função mudou e o comentário dela não. Atualize o `##` ou, se ele continua correto, confirme com o comando que o check sugere (`scripts/check-doc-review.ps1 -Reviewed "<arquivo>::<função>"`). Decisão `0011`.
 - **`/fim` não faz push**: confira se o remoto existe (`git remote -v`) e se a branch é `main` (`git branch --show-current`). Sem `origin`, os commits ficam só locais.
