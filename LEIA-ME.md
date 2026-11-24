@@ -90,16 +90,16 @@ Os fluxos estão em `game\.agents\fluxos\` e aparecem como comandos no Claude Co
 | `/revisar` | Revisa o diff atual ou os commits não enviados, por categoria. Não altera nada. |
 | `/fim` | Roda o check completo, atualiza `docs\`, revisa os commits da sessão e faz push da `main`. |
 
-Regras de git (decisão `0008`; detalhes na seção **Git** de `game\AGENTS.md`):
+Regras de git (decisão `0010`; detalhes na seção **Git** de `game\AGENTS.md`):
 
-- Todo trabalho acontece direto na `main`, sem branches.
+- Todo trabalho acontece direto na `main`. O agente só cria branch a seu pedido (ex.: testar uma feature à parte) e nunca faz push dela.
 - O agente faz um commit ao fim de cada módulo, com o check passando, no modelo `<tipo>(<escopo>): <resumo>` (ex.: `feat(player): adiciona pulo com coyote time`). Sem rodapé de coautoria.
 - O push só acontece no `/fim`, depois do check completo e da revisão. Nunca com `--force`.
 
 ## Depois do setup
 
 - `game\docs\status.md` já descreve o ponto de partida. O próximo passo é definir o escopo do jogo em `game\docs\arquitetura.md`.
-- As decisões `0001`–`0008` em `game\docs\decisoes\` valem para todo projeto criado pelo modelo. Mude-as com uma nova decisão, não editando as antigas.
+- As decisões `0001`–`0010` em `game\docs\decisoes\` valem para todo projeto criado pelo modelo. Mude-as com uma nova decisão, não editando as antigas.
 - `notes\` é livre (GDD, imagens, links). Os agentes usam `game\docs\` como memória.
 
 ## Atualizar a versão do Godot

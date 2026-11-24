@@ -92,16 +92,16 @@ The workflows live in `game\.agents\fluxos\` and are exposed as commands in Clau
 | `/revisar` (review) | Reviews the current diff or unpushed commits, by category. Changes nothing. |
 | `/fim` (end) | Runs the full check, updates `docs\`, reviews the session's commits and pushes `main`. |
 
-Git rules (decision `0008`; details in the **Git** section of `game\AGENTS.md`):
+Git rules (decision `0010`; details in the **Git** section of `game\AGENTS.md`):
 
-- All work happens directly on `main`, with no branches.
+- All work happens directly on `main`. The agent only creates a branch when you ask (e.g. to try out a feature separately) and never pushes it.
 - The agent commits at the end of each module, with the check passing, using the `<tipo>(<escopo>): <resumo>` format with Portuguese summaries (e.g. `feat(player): adiciona pulo com coyote time`). No co-author trailers.
 - Push only happens in `/fim`, after the full check and the review. Never with `--force`.
 
 ## After setup
 
 - `game\docs\status.md` already describes the starting point. The next step is defining the game's scope in `game\docs\arquitetura.md`.
-- Decisions `0001`–`0008` in `game\docs\decisoes\` apply to every project created from the template. Change them with a new decision instead of editing the old ones.
+- Decisions `0001`–`0010` in `game\docs\decisoes\` apply to every project created from the template. Change them with a new decision instead of editing the old ones.
 - `notes\` is free-form (GDD, images, links). Agents use `game\docs\` as their memory.
 
 ## Updating the Godot version
