@@ -1,7 +1,7 @@
 # Status
 
 ## Onde paramos
-- Projeto criado a partir do modelo `godot-template`: Godot 4.7, pipeline `scripts/check.ps1` (versão, gdformat, gdlint, parse, gdUnit4), godot-mcp, instruções para agentes.
+- Projeto criado a partir do modelo `godot-template`: Godot 4.7, pipeline `scripts/check.ps1` (versão, gdtoolkit, gdformat, gdlint, `##` das funções, parse, gdUnit4), godot-mcp, instruções para agentes.
 - Nenhuma mecânica implementada ainda.
 
 ## Próximo passo
@@ -12,4 +12,4 @@
 - Nenhum.
 
 ## Pendências de infraestrutura
-- Confirmar que o check falha nas sabotagens (teste, parse, formatação, lint).
+- Nenhuma. O check foi validado por sabotagem: reprova teste falhando, erro de tipo em script sem uso, declaração sem tipo, formatação, lint, gdtoolkit ausente, função sem `##` e função alterada com o `##` sem revisão.
