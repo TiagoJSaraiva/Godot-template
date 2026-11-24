@@ -16,7 +16,7 @@ godot-template\
   game\                 projeto Godot
     project.godot
     AGENTS.md           instruções para agentes (CLAUDE.md e GEMINI.md importam)
-    .agents\fluxos\     fluxos inicio / planejar / revisar / fim / multiagente
+    .agents\fluxos\     fluxos inicio / planejar / revisar / fim
     .claude\  .gemini\  comandos, hook e configurações de cada agente
     .mcp.json           MCP godot (rodar o jogo e ler o console)
     docs\               memória do projeto: status, arquitetura, sistemas, decisões
@@ -89,18 +89,17 @@ Os fluxos estão em `game\.agents\fluxos\` e aparecem como comandos no Claude Co
 | `/planejar` | Monta um plano (arquivos, cenas, testes, commits previstos) e espera aprovação antes de codar. |
 | `/revisar` | Revisa o diff atual ou os commits não enviados, por categoria. Não altera nada. |
 | `/fim` | Roda o check completo, atualiza `docs\`, revisa os commits da sessão e faz push da `main`. |
-| `/multiagente <modelo>: <pedido>` | Divide a tarefa entre subagentes (ex.: `sonnet`, `haiku`) que trabalham em paralelo, cada um na própria branch; revisa, integra tudo na `main`, faz push e apaga as branches locais. |
 
-Regras de git (decisão `0007`; detalhes na seção **Git** de `game\AGENTS.md`):
+Regras de git (decisão `0008`; detalhes na seção **Git** de `game\AGENTS.md`):
 
-- Todo trabalho acontece direto na `main`. Branches só existem no `/multiagente`, são locais e nunca vão para o remoto.
+- Todo trabalho acontece direto na `main`, sem branches.
 - O agente faz um commit ao fim de cada módulo, com o check passando, no modelo `<tipo>(<escopo>): <resumo>` (ex.: `feat(player): adiciona pulo com coyote time`). Sem rodapé de coautoria.
 - O push só acontece no `/fim`, depois do check completo e da revisão. Nunca com `--force`.
 
 ## Depois do setup
 
 - `game\docs\status.md` já descreve o ponto de partida. O próximo passo é definir o escopo do jogo em `game\docs\arquitetura.md`.
-- As decisões `0001`–`0007` em `game\docs\decisoes\` valem para todo projeto criado pelo modelo. Mude-as com uma nova decisão, não editando as antigas.
+- As decisões `0001`–`0008` em `game\docs\decisoes\` valem para todo projeto criado pelo modelo. Mude-as com uma nova decisão, não editando as antigas.
 - `notes\` é livre (GDD, imagens, links). Os agentes usam `game\docs\` como memória.
 
 ## Atualizar a versão do Godot
@@ -114,4 +113,3 @@ Regras de git (decisão `0007`; detalhes na seção **Git** de `game\AGENTS.md`)
 - **`ERROR: Remote Debugger ... port` na saída dos testes**: ruído conhecido, não é falha.
 - **`gdformat` não encontrado**: a pasta `Scripts` do Python precisa estar no `PATH`.
 - **`/fim` não faz push**: confira se o remoto existe (`git remote -v`) e se a branch é `main` (`git branch --show-current`). Sem `origin`, os commits ficam só locais.
-- **Sobrou pasta em `game\.worktrees\`**: um `/multiagente` foi interrompido. `git worktree list` mostra o que ficou. Integre ou descarte cada branch `agente/*` e remova a worktree com `git worktree remove`.

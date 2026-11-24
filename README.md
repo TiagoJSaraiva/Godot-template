@@ -18,7 +18,7 @@ godot-template\
   game\                 Godot project
     project.godot
     AGENTS.md           agent instructions (imported by CLAUDE.md and GEMINI.md)
-    .agents\fluxos\     workflows: inicio / planejar / revisar / fim / multiagente
+    .agents\fluxos\     workflows: inicio / planejar / revisar / fim
     .claude\  .gemini\  commands, hook and settings for each agent
     .mcp.json           godot MCP (run the game and read the console)
     docs\               project memory: status, architecture, systems, decisions
@@ -91,18 +91,17 @@ The workflows live in `game\.agents\fluxos\` and are exposed as commands in Clau
 | `/planejar` (plan) | Drafts a plan (files, scenes, tests, planned commits) and waits for approval before coding. |
 | `/revisar` (review) | Reviews the current diff or unpushed commits, by category. Changes nothing. |
 | `/fim` (end) | Runs the full check, updates `docs\`, reviews the session's commits and pushes `main`. |
-| `/multiagente <model>: <request>` | Splits the task among subagents (e.g. `sonnet`, `haiku`) working in parallel, each on its own branch; reviews, merges everything into `main`, pushes and deletes the local branches. |
 
-Git rules (decision `0007`; details in the **Git** section of `game\AGENTS.md`):
+Git rules (decision `0008`; details in the **Git** section of `game\AGENTS.md`):
 
-- All work happens directly on `main`. Branches exist only in `/multiagente`; they are local and never pushed.
+- All work happens directly on `main`, with no branches.
 - The agent commits at the end of each module, with the check passing, using the `<tipo>(<escopo>): <resumo>` format with Portuguese summaries (e.g. `feat(player): adiciona pulo com coyote time`). No co-author trailers.
 - Push only happens in `/fim`, after the full check and the review. Never with `--force`.
 
 ## After setup
 
 - `game\docs\status.md` already describes the starting point. The next step is defining the game's scope in `game\docs\arquitetura.md`.
-- Decisions `0001`–`0007` in `game\docs\decisoes\` apply to every project created from the template. Change them with a new decision instead of editing the old ones.
+- Decisions `0001`–`0008` in `game\docs\decisoes\` apply to every project created from the template. Change them with a new decision instead of editing the old ones.
 - `notes\` is free-form (GDD, images, links). Agents use `game\docs\` as their memory.
 
 ## Updating the Godot version
@@ -116,4 +115,3 @@ Git rules (decision `0007`; details in the **Git** section of `game\AGENTS.md`):
 - **`ERROR: Remote Debugger ... port` in the test output**: known noise, not a failure.
 - **`gdformat` not found**: Python's `Scripts` folder must be on `PATH`.
 - **`/fim` does not push**: check that the remote exists (`git remote -v`) and that the branch is `main` (`git branch --show-current`). Without `origin`, commits stay local.
-- **Leftover folder in `game\.worktrees\`**: a `/multiagente` run was interrupted. `git worktree list` shows what remains. Merge or discard each `agente/*` branch and remove the worktree with `git worktree remove`.
