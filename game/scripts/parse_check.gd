@@ -11,7 +11,9 @@ func _initialize() -> void:
 	var failed: PackedStringArray = []
 	for path: String in paths:
 		# Ignora o cache: cada script é compilado de novo, mesmo que já tenha sido carregado.
-		var script := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE) as Script
+		var script: Script = (
+			ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE) as Script
+		)
 		if script == null or not script.can_instantiate():
 			failed.append(path)
 	for path: String in failed:

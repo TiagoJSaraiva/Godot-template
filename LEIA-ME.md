@@ -99,7 +99,7 @@ Regras de git (decisão `0010`; detalhes na seção **Git** de `game\AGENTS.md`)
 ## Depois do setup
 
 - `game\docs\status.md` já descreve o ponto de partida. O próximo passo é definir o escopo do jogo em `game\docs\arquitetura.md`.
-- As decisões `0001`–`0011` em `game\docs\decisoes\` valem para todo projeto criado pelo modelo. Mude-as com uma nova decisão, não editando as antigas.
+- As decisões `0001`–`0012` em `game\docs\decisoes\` valem para todo projeto criado pelo modelo. Mude-as com uma nova decisão, não editando as antigas.
 - `notes\` é livre (GDD, imagens, links). Os agentes usam `game\docs\` como memória.
 
 ## Atualizar a versão do Godot

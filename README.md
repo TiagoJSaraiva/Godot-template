@@ -101,7 +101,7 @@ Git rules (decision `0010`; details in the **Git** section of `game\AGENTS.md`):
 ## After setup
 
 - `game\docs\status.md` already describes the starting point. The next step is defining the game's scope in `game\docs\arquitetura.md`.
-- Decisions `0001`–`0011` in `game\docs\decisoes\` apply to every project created from the template. Change them with a new decision instead of editing the old ones.
+- Decisions `0001`–`0012` in `game\docs\decisoes\` apply to every project created from the template. Change them with a new decision instead of editing the old ones.
 - `notes\` is free-form (GDD, images, links). Agents use `game\docs\` as their memory.
 
 ## Updating the Godot version

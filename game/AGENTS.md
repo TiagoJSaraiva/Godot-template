@@ -37,7 +37,7 @@ Regras gerais:
 ## Regras essenciais de GDScript
 
 Detalhes e exemplos em `docs/convencoes-gdscript.md`. O mínimo inegociável:
-- **Tipagem estática em tudo**: variáveis, parâmetros, retornos, arrays (`Array[Enemy]`).
+- **Tipagem estática e explícita em tudo**: variáveis, constantes, parâmetros, retornos, iteradores de `for`, arrays (`Array[Enemy]`). Nunca `:=`: o tipo é sempre escrito, e o check reprova inferência (decisão 0012).
 - **Somente sintaxe do Godot 4** (`@export`, `@onready`, `await`, `signal.connect(callable)`). Nunca sintaxe do Godot 3.
 - Ações de input semânticas (`move_left`, `jump`), nunca `ui_*` para gameplay.
 - "Call down, signal up": pai chama filho; filho emite sinal. Sem `get_parent().get_parent()`.
