@@ -13,11 +13,12 @@ godot-template/
   setup.mjs             aplica o nome do jogo (remove a si mesmo)
   game.code-workspace   workspace do VS Code: pastas "Jogo" e "Notas"
   .gitattributes        finais de linha iguais em Windows e Linux
+  .github/workflows/    CI: check em Linux a cada pull request e push na main
   notes/                anotações livres: GDD, referências, imagens
   game/                 projeto Godot
     project.godot
     AGENTS.md           instruções para agentes (CLAUDE.md e GEMINI.md importam)
-    .agents/fluxos/     fluxos inicio / planejar / revisar / fim
+    .agents/fluxos/     fluxos inicio / planejar / revisar / fim / configurar / colaborar / integrar
     .claude/  .gemini/  comandos, hook e configurações de cada agente
     .mcp.json           MCP godot (rodar o jogo e ler o console)
     .env.example        modelo da configuração local (caminho do Godot)
@@ -81,7 +82,7 @@ cd game
 node scripts/check.mjs
 ```
 
-Depois, abra `meu-jogo.code-workspace` no VS Code. No Claude Code, abra a sessão dentro de `game/` e aprove o MCP `godot` na primeira vez (a aprovação fica em `.claude/settings.local.json`, que não é versionado). Comece com `/inicio`.
+Depois, abra `meu-jogo.code-workspace` no VS Code. No Claude Code, abra a sessão dentro de `game/` e aprove o MCP `godot` na primeira vez (a aprovação fica em `.claude/settings.local.json`, que não é versionado). Comece com `/configurar` (papel **dono**) e depois `/inicio`.
 
 ### O que o setup faz
 
@@ -106,23 +107,48 @@ Os fluxos estão em `game/.agents/fluxos/` e aparecem como comandos no Claude Co
 | `/inicio` | Confere a versão do Godot e o estado do git, lê `docs/status.md` e resume onde paramos. |
 | `/planejar` | Monta um plano (arquivos, cenas, testes, commits previstos) e espera aprovação antes de codar. |
 | `/revisar` | Revisa o diff atual ou os commits não enviados, por categoria. Não altera nada. |
-| `/fim` | Roda o check completo, atualiza `docs/`, revisa os commits da sessão e faz push da `main`. |
+| `/fim` | Roda o check completo, atualiza `docs/`, revisa os commits da sessão e faz push (dono: `main`; colaborador: a branch, para o fork). |
+| `/configurar` | Uma vez por máquina: confere os pré-requisitos, cria o `.env` e define o papel (dono ou colaborador). |
+| `/colaborar` | Colaborador: começa uma contribuição, numa branch com missão, a partir da `main` do repositório original. |
+| `/integrar` | Dono: revisa e integra um pull request na `main`, reconciliando a documentação. |
 
-Regras de git (decisão `0010`; detalhes na seção **Git** de `game/AGENTS.md`):
+Regras de git do dono (decisão `0010`; detalhes na seção **Git** de `game/AGENTS.md`):
 
 - Todo trabalho acontece direto na `main`. O agente só cria branch a seu pedido (ex.: testar uma feature à parte) e nunca faz push dela.
 - O agente faz um commit ao fim de cada módulo, com o check passando, no modelo `<tipo>(<escopo>): <resumo>` (ex.: `feat(player): adiciona pulo com coyote time`). Sem rodapé de coautoria.
 - O push só acontece no `/fim`, depois do check completo e da revisão. Nunca com `--force`.
 
+## Colaborar num projeto feito com o modelo
+
+Para quem contribui com o projeto de outra pessoa (decisão `0014`; regras na seção **Colaboração** de `game/AGENTS.md`):
+
+1. No GitHub, faça um **fork** do repositório e clone o **seu fork** (`git clone <url-do-seu-fork>`).
+2. Instale os pré-requisitos (acima) e abra o agente dentro de `game/`.
+3. Rode `/configurar`, escolha o papel **colaborador** e informe a URL do repositório original (vira o remoto `upstream`). Uma vez por máquina.
+4. A cada contribuição, rode `/colaborar`: o agente pede a missão (objetivo, o que inclui e não inclui, pastas), propõe o nome da branch (`<tipo>/<descricao>`, ex.: `fix/corrige-pulo-duplo`) e cria a branch a partir da `main` original, sem precisar atualizar o fork antes.
+5. Trabalhe normalmente (`/planejar`, implementação). Uma branch tem **um propósito**: o agente alerta quando um pedido não cabe na missão, e o check reprova commit de outro tipo (ex.: `feat` numa `fix/`) e alteração em arquivo protegido (memória compartilhada, instruções, ferramentas, addons).
+6. Rode `/fim`: o agente atualiza a missão, roda o check, envia a branch para o seu fork e entrega o texto do pull request.
+7. No GitHub, abra o pull request do seu fork para a `main` do original. O CI roda o check em Linux.
+
+## Integrar contribuições (dono)
+
+1. Leia o pull request no GitHub e confira o resultado do CI. **Não use o botão de merge.**
+2. Rode `/integrar <número do PR>`. O agente busca a branch sem trocar para ela e analisa sem executar nada dela: commits, missão, infraestrutura alterada, scripts `@tool`, APIs sensíveis (execução de programas, rede) e documentação. Ele para e pede a sua aprovação.
+3. Aprovado, ele faz o merge, roda o check, numera as decisões propostas, incorpora o estado da missão ao `status.md`, apaga a pasta da branch e faz push. O GitHub marca o pull request como integrado.
+
+## CI (GitHub Actions)
+
+`.github/workflows/check.yml` roda o check completo em Linux a cada pull request (com as regras de colaborador) e a cada push na `main`. Ele instala Node, Python, o gdtoolkit fixado, o Godot oficial e uma tela virtual (Xvfb), porque os testes de cena abrem janela. A versão exata do Godot fica em `GODOT_VERSION` no workflow.
+
 ## Depois do setup
 
 - `game/docs/status.md` já descreve o ponto de partida. O próximo passo é definir o escopo do jogo em `game/docs/arquitetura.md`.
-- As decisões `0001`–`0013` em `game/docs/decisoes/` valem para todo projeto criado pelo modelo. Mude-as com uma nova decisão, não editando as antigas.
+- As decisões `0001`–`0014` em `game/docs/decisoes/` valem para todo projeto criado pelo modelo. Mude-as com uma nova decisão, não editando as antigas.
 - `notes/` é livre (GDD, imagens, links). Os agentes usam `game/docs/` como memória.
 
 ## Atualizar a versão do Godot
 
-`config/features` em `project.godot` fixa a versão (decisão `0002`). Para migrar, registre uma nova decisão, atualize o Godot e altere a versão em `config/features` no mesmo passo. O check falha enquanto as duas versões forem diferentes.
+`config/features` em `project.godot` fixa a versão (decisão `0002`). Para migrar, registre uma nova decisão, atualize o Godot e altere a versão em `config/features` e o `GODOT_VERSION` do CI (`.github/workflows/check.yml`) no mesmo passo. O check falha enquanto as versões forem diferentes.
 
 ## Renderizador e D3D12 no Windows
 
@@ -136,4 +162,6 @@ Regras de git (decisão `0010`; detalhes na seção **Git** de `game/AGENTS.md`)
 - **`gdformat` não encontrado**: instale com `requirements.txt` (acima) e confira se a pasta de scripts do Python está no `PATH` (`Scripts` no Windows, `~/.local/bin` no Linux).
 - **Check avisa que o gdtoolkit é de outra versão**: rode de novo a instalação com `requirements.txt`; versões diferentes podem formatar diferente.
 - **Check acusa função com o `##` sem revisão**: a função mudou e o comentário dela não. Atualize o `##` ou, se ele continua correto, confirme com o comando que o check sugere (`node scripts/check-doc-review.mjs --reviewed "<arquivo>::<função>"`). Decisão `0011`.
+- **Check acusa "Sem tela gráfica para os testes" no Linux**: os testes de cena abrem janela. Rode numa sessão gráfica ou instale o Xvfb (`sudo apt install xvfb`); o check usa a tela virtual sozinho. No WSL, a tela vem do WSLg; se ela cair, `wsl --shutdown` e abrir de novo a restaura.
+- **`git status` mostra arquivos `.import` alterados sem diferença real**: cópia de trabalho criada antes do `.gitattributes` atual (`eol=lf`). Rode `git add --renormalize .` uma vez: nada muda no conteúdo e o status fica limpo.
 - **`/fim` não faz push**: confira se o remoto existe (`git remote -v`) e se a branch é `main` (`git branch --show-current`). Sem `origin`, os commits ficam só locais.
