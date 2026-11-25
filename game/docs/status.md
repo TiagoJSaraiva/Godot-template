@@ -1,7 +1,7 @@
 # Status
 
 ## Onde paramos
-- Projeto criado a partir do modelo `godot-template`: Godot 4.7, pipeline `scripts/check.ps1` (versão, gdtoolkit, gdformat, gdlint, `##` das funções, parse, gdUnit4), godot-mcp, instruções para agentes.
+- Projeto criado a partir do modelo `godot-template`: Godot 4.7, pipeline `scripts/check.mjs`, em Node, para Windows e Linux (versão, gdtoolkit, gdformat, gdlint, `##` das funções, parse, gdUnit4), godot-mcp, instruções para agentes.
 - Nenhuma mecânica implementada ainda.
 
 ## Próximo passo
