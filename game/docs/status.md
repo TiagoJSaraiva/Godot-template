@@ -12,4 +12,4 @@
 - Nenhum.
 
 ## Pendências de infraestrutura
-- Nenhuma. O check foi validado por sabotagem: reprova teste falhando, erro de tipo em script sem uso, declaração sem tipo, formatação, lint, gdtoolkit ausente, função sem `##` e função alterada com o `##` sem revisão.
+- Nenhuma. O check foi validado por sabotagem: reprova teste falhando, erro de tipo em script sem uso, declaração sem tipo, `:=` (também em teste), formatação, lint, gdtoolkit ausente, função sem `##` e função alterada com o `##` sem revisão.
