@@ -1,98 +1,116 @@
 # godot-template
 
-Template for **Godot 4.7 + GDScript** games, ready to work with AI agents (Claude Code, Codex, Gemini CLI).
+Template for **Godot 4.7 + GDScript** games, ready to work with AI agents (Claude Code, Codex, Gemini CLI), on **Windows or Linux**.
 
 *Versão em português: [LEIA-ME.md](LEIA-ME.md).*
 
-> The agent instructions, workflows and project docs inside `game\` are written in Portuguese, and the agents answer in Portuguese. Code identifiers, file names and node names are in English.
+> The agent instructions, workflows and project docs inside `game/` are written in Portuguese, and the agents answer in Portuguese. Code identifiers, file names and node names are in English.
 
 ## What's in the template
 
 ```
-godot-template\
+godot-template/
   README.md             this guide (replaced by setup)
-  LEIA-ME.md            this guide in Portuguese (removed by setup)
-  setup.ps1             applies the game name (deletes itself)
-  game.code-workspace   VS Code workspace: "Jogo" (game) and "Notas" (notes) folders
-  notes\                free-form notes: GDD, references, images
-  game\                 Godot project
+  LEIA-ME.md            Portuguese guide (removed by setup)
+  setup.mjs             applies the game name (deletes itself)
+  game.code-workspace   VS Code workspace: "Jogo" and "Notas" folders
+  .gitattributes        same line endings on Windows and Linux
+  notes/                free-form notes: GDD, references, images
+  game/                 Godot project
     project.godot
     AGENTS.md           agent instructions (imported by CLAUDE.md and GEMINI.md)
-    .agents\fluxos\     workflows: inicio / planejar / revisar / fim
-    .claude\  .gemini\  commands, hook and settings for each agent
+    .agents/fluxos/     workflows: inicio / planejar / revisar / fim
+    .claude/  .gemini/  commands, hook and settings for each agent
     .mcp.json           godot MCP (run the game and read the console)
-    docs\               project memory: status, architecture, systems, decisions
-    scripts\            check.ps1 (verification pipeline) and the steps it calls
-    test\               gdUnit4 tests (unit\ and scenes\)
-    addons\gdUnit4\     gdUnit4 6.2.0
+    .env.example        template for the local settings (Godot path)
+    requirements.txt    pinned gdtoolkit version
+    docs/               project memory: status, architecture, systems, decisions
+    scripts/            check.mjs (verification pipeline) and the steps it calls
+    test/               gdUnit4 tests (unit/ and scenes/)
+    addons/gdUnit4/     gdUnit4 6.2.0
 ```
 
-Conventions and workflows are detailed in `game\AGENTS.md` and `game\docs\`.
+Conventions and workflow details live in `game/AGENTS.md` and `game/docs/`.
 
 ## Prerequisites (once per machine)
 
 | Tool | Used for | How to check |
 |---|---|---|
-| Godot **4.7.x** (Steam, `stable-4.7` branch) | engine | `& $env:GODOT_PATH --version` |
-| `GODOT_PATH` environment variable pointing to the Godot **.exe** (not the folder) | check, hook and MCP | `echo $env:GODOT_PATH` |
-| Python + gdtoolkit 4 (`pip install "gdtoolkit==4.*"`; tested with 4.5.0) | `gdformat` and `gdlint` | `gdformat --version` |
-| Node.js (with `npx`) | `godot` MCP (`@coding-solo/godot-mcp`) | `npx --version` |
-| Git, with push access to a remote repository (e.g. GitHub) | agent commits and push | `git --version` |
-| VS Code + godot-tools extension (optional) | editing GDScript in VS Code | — |
+| Godot **4.7.x**, from any source (Steam or the [official site](https://godotengine.org/download)). On Linux, use the executable from the site, not Flatpak | engine | open Godot and check the version |
+| Node.js **18+** | check, hook and `godot` MCP | `node --version` |
+| Python 3 + gdtoolkit at the version in `game/requirements.txt` | `gdformat` and `gdlint` | `gdformat --version` |
+| Git, with push access to a remote repository (e.g. GitHub) | agent commits and pushes | `git --version` |
+| VS Code + godot-tools extension (optional) | edit GDScript in VS Code | — |
 
-To set `GODOT_PATH` permanently (PowerShell, then reopen the terminal):
+Installing gdtoolkit (from `game/`):
 
-```powershell
-[Environment]::SetEnvironmentVariable("GODOT_PATH", "C:\Program Files (x86)\Steam\steamapps\common\Godot Engine\godot.windows.opt.tools.64.exe", "User")
+```sh
+# Windows
+pip install -r requirements.txt
+
+# Linux: global pip is usually blocked (PEP 668); install for your user only
+pip3 install --user --break-system-packages -r requirements.txt
+# and make sure ~/.local/bin is on PATH (reopen the terminal after the first install)
 ```
+
+In VS Code, the godot-tools extension needs the Godot path. Set it in your **user settings** (not in the workspace, which is versioned): `godotTools.editorPath.godot4`.
 
 ## Creating a new game
 
-```powershell
+```sh
 # 1. Copy the template (never work inside godot-template itself)
-Copy-Item -Recurse C:\Programacao\godot-template C:\Programacao\my-game
-cd C:\Programacao\my-game
+#    Windows: Copy-Item -Recurse C:\Programacao\godot-template C:\Programacao\my-game
+#    Linux:   cp -r ~/godot-template ~/my-game
+cd my-game
 
-# 2. Apply the name
-powershell -NoProfile -ExecutionPolicy Bypass -File setup.ps1 -Name "My Game"
+# 2. Apply the name (also creates game/.env)
+node setup.mjs --name "My Game"
 
-# 3. Version control (repository at the root, covering game\ and notes\; the branch must be named main)
+# 3. Set the Godot path: edit game/.env and fill GODOT_PATH with the path to the executable
+#    (the file, not the folder). Examples in game/.env.example.
+
+# 4. Version it (repository at the root, covering game/ and notes/; the branch must be main)
 git init -b main
 git add .
 git commit -m "chore: cria projeto a partir do godot-template"
 
-# 4. Remote (the agents' /fim pushes to origin/main)
+# 5. Remote (the agents' /fim pushes to origin/main)
 git remote add origin <repository-url>
 git push -u origin main
 
-# 5. First full check (generates .godot\ and exercises the whole pipeline)
+# 6. First full check (generates .godot/ and exercises the whole pipeline)
 cd game
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check.ps1
+node scripts/check.mjs
 ```
 
-Then open `my-game.code-workspace` in VS Code. In Claude Code, start the session inside `game\` and approve the `godot` MCP the first time (the approval is stored in `.claude\settings.local.json`, which is not versioned). Start with `/inicio`.
+Then open `my-game.code-workspace` in VS Code. In Claude Code, start the session inside `game/` and approve the `godot` MCP the first time (the approval is stored in `.claude/settings.local.json`, which is not versioned). Start with `/inicio`.
 
 ### What setup does
 
-`setup.ps1` replaces the `__GAME_NAME__` placeholder, adjusts the workspace and replaces the template guides. To do it by hand:
+`setup.mjs` replaces the `__GAME_NAME__` placeholder, renames the workspace, replaces the template guides and creates `game/.env`. To do it by hand:
 
-1. `game\project.godot`: `config/name="__GAME_NAME__"` → game name.
-2. `game\AGENTS.md`: title `# AGENTS.md — __GAME_NAME__` → game name.
-3. Rename `game.code-workspace` to `<game-name>.code-workspace` and, if Godot lives elsewhere, adjust `godotTools.editorPath.godot4` (setup uses `GODOT_PATH` when set).
-4. Replace `README.md` with the game's own README and delete `LEIA-ME.md` and `setup.ps1`.
+1. `game/project.godot`: `config/name="__GAME_NAME__"` → game name.
+2. `game/AGENTS.md`: title `# AGENTS.md — __GAME_NAME__` → game name.
+3. Rename `game.code-workspace` to `<game-name>.code-workspace`.
+4. Replace `README.md` with the game's own README and delete `LEIA-ME.md` and `setup.mjs`.
+5. Copy `game/.env.example` to `game/.env` and fill `GODOT_PATH`.
+
+## Local settings (`game/.env`)
+
+`game/.env` holds what changes from one machine to another and is **not versioned**; the versioned template is `game/.env.example`. Today it only has `GODOT_PATH`, read by the check, the Claude Code hook and the MCP. If you prefer, set `GODOT_PATH` as a system environment variable: it takes precedence over `.env`.
 
 ## Working with the agents
 
-The workflows live in `game\.agents\fluxos\` and are exposed as commands in Claude Code and Gemini CLI:
+The workflows live in `game/.agents/fluxos/` and are exposed as commands in Claude Code and Gemini CLI:
 
 | Command | What it does |
 |---|---|
-| `/inicio` (start) | Checks the Godot version and git state, reads `docs\status.md` and summarizes where things stand. |
+| `/inicio` (start) | Checks the Godot version and git state, reads `docs/status.md` and summarizes where things stand. |
 | `/planejar` (plan) | Drafts a plan (files, scenes, tests, planned commits) and waits for approval before coding. |
 | `/revisar` (review) | Reviews the current diff or unpushed commits, by category. Changes nothing. |
-| `/fim` (end) | Runs the full check, updates `docs\`, reviews the session's commits and pushes `main`. |
+| `/fim` (end) | Runs the full check, updates `docs/`, reviews the session's commits and pushes `main`. |
 
-Git rules (decision `0010`; details in the **Git** section of `game\AGENTS.md`):
+Git rules (decision `0010`; details in the **Git** section of `game/AGENTS.md`):
 
 - All work happens directly on `main`. The agent only creates a branch when you ask (e.g. to try out a feature separately) and never pushes it.
 - The agent commits at the end of each module, with the check passing, using the `<tipo>(<escopo>): <resumo>` format with Portuguese summaries (e.g. `feat(player): adiciona pulo com coyote time`). No co-author trailers.
@@ -100,19 +118,24 @@ Git rules (decision `0010`; details in the **Git** section of `game\AGENTS.md`):
 
 ## After setup
 
-- `game\docs\status.md` already describes the starting point. The next step is defining the game's scope in `game\docs\arquitetura.md`.
-- Decisions `0001`–`0012` in `game\docs\decisoes\` apply to every project created from the template. Change them with a new decision instead of editing the old ones.
-- `notes\` is free-form (GDD, images, links). Agents use `game\docs\` as their memory.
+- `game/docs/status.md` already describes the starting point. The next step is defining the game's scope in `game/docs/arquitetura.md`.
+- Decisions `0001`–`0013` in `game/docs/decisoes/` apply to every project created from the template. Change them with a new decision instead of editing the old ones.
+- `notes/` is free-form (GDD, images, links). Agents use `game/docs/` as their memory.
 
 ## Updating the Godot version
 
 `config/features` in `project.godot` pins the version (decision `0002`). To migrate, record a new decision, update Godot and change the version in `config/features` in the same step. The check fails while the two versions differ.
 
+## Renderer and D3D12 on Windows
+
+`project.godot` sets `rendering_device/driver.windows="d3d12"`. It only applies on Windows and only to the Forward+ and Mobile renderers (the template starts on Compatibility, which uses OpenGL and ignores it). It exists because on some machines Vulkan falls back to Mesa Dozen (a Microsoft layer that emulates Vulkan on top of D3D12) and the game window stays black; using D3D12 directly works. It stays in the project, for everyone: keeping it on a single machine through `override.cfg` does not work, because the editor writes the value back into `project.godot` when it saves the project settings (decision `0013`).
+
 ## Troubleshooting
 
-- **Hook or check reports `GODOT_PATH não definido`** (not set): set the variable (above) and reopen the terminal/VS Code.
-- **Black game window**: on this machine, Vulkan falls back to Mesa Dozen and does not render. Keep `rendering_device/driver.windows="d3d12"` in `project.godot`.
+- **Hook or check reports `GODOT_PATH não definido`** (not set): fill `GODOT_PATH` in `game/.env` (see `game/.env.example`).
+- **Black game window on Windows**: see "Renderer and D3D12 on Windows" above.
 - **`ERROR: Remote Debugger ... port` in the test output**: known noise, not a failure.
-- **`gdformat` not found**: Python's `Scripts` folder must be on `PATH`.
-- **Check reports a function whose `##` was not reviewed**: the function changed and its doc comment did not. Update the `##` or, if it is still correct, confirm it with the command the check suggests (`scripts/check-doc-review.ps1 -Reviewed "<file>::<function>"`). Decision `0011`.
+- **`gdformat` not found**: install it with `requirements.txt` (above) and make sure Python's scripts folder is on `PATH` (`Scripts` on Windows, `~/.local/bin` on Linux).
+- **Check warns that gdtoolkit is a different version**: reinstall with `requirements.txt`; different versions may format differently.
+- **Check reports a function whose `##` was not reviewed**: the function changed and its doc comment did not. Update the `##` or, if it is still correct, confirm it with the command the check suggests (`node scripts/check-doc-review.mjs --reviewed "<file>::<function>"`). Decision `0011`.
 - **`/fim` does not push**: check that the remote exists (`git remote -v`) and that the branch is `main` (`git branch --show-current`). Without `origin`, commits stay local.

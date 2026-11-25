@@ -8,8 +8,11 @@ reports/
 # Configuração local do Claude Code
 .claude/settings.local.json
 
+# Configuração local da máquina (caminho do Godot); o modelo versionado é o .env.example
+.env
+
 # Diretório de build do Godot
 dist/
 
-# Confirmações locais de ## revisado (scripts/check-doc-review.ps1)
+# Confirmações locais de ## revisado (scripts/check-doc-review.mjs)
 .doc-review

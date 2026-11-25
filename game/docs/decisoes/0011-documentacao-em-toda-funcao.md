@@ -1,7 +1,7 @@
 # 0011 — `##` em toda função, revisado quando a função muda
 
 - **Data**: 2026-11
-- **Status**: aceita
+- **Status**: aceita; ferramentas atualizadas pela 0013
 
 ## Contexto
 O desenvolvedor lê e revisa todo o código, e o hover do editor mostra o `##` de uma função em qualquer chamada dela. A convenção pedia `##` só em classes e métodos públicos. No the-beacon, criado a partir de uma versão anterior deste modelo, a regra só escrita não foi seguida: 85 de 238 funções públicas tinham `##`, e 98 de 465 no total. Lá a regra passou a valer para toda função, verificada pelo check (decisões 0021 e 0022 de lá), e este modelo a adota.

@@ -1,6 +1,6 @@
 extends SceneTree
-## Etapa de parse do check.ps1 (decisão 0009). Compila cada script recebido depois de "--",
-## já com os autoloads do projeto registrados, e sai com código 1 se algum não compilar.
+## Etapa de parse do check (docs/decisoes/*-parse-unico-com-autoloads.md). Compila cada script
+## recebido depois de "--", já com os autoloads registrados, e sai com 1 se algum não compilar.
 ## Fica em scripts/ (ignorado pelo Godot) porque não faz parte do jogo.
 
 

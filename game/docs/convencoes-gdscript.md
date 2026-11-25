@@ -122,4 +122,4 @@ func apply_damage(amount: int) -> void:
 func apply_damage(amount: int) -> void:
 ```
 
-- Alterou uma função (assinatura ou corpo): revise o `##` no mesmo passo (decisão 0011). O check compara com o HEAD e reprova a função alterada cujo `##` não mudou. Se ele continua correto (correção de bug, refatoração), confirme com `scripts/check-doc-review.ps1 -Reviewed "<arquivo>::<função>"`; mexer de novo na função invalida a confirmação.
+- Alterou uma função (assinatura ou corpo): revise o `##` no mesmo passo (decisão 0011). O check compara com o HEAD e reprova a função alterada cujo `##` não mudou. Se ele continua correto (correção de bug, refatoração), confirme com `node scripts/check-doc-review.mjs --reviewed "<arquivo>::<função>"`; mexer de novo na função invalida a confirmação.
