@@ -21,12 +21,12 @@ godot-template/
     project.godot
     AGENTS.md           agent instructions (imported by CLAUDE.md and GEMINI.md)
     .agents/fluxos/     workflows: inicio / planejar / revisar / fim / configurar / colaborar / integrar
-    .claude/  .gemini/  commands, hook and settings for each agent
+    .claude/  .gemini/  commands, review subagent, hook and settings for each agent
     .mcp.json           godot MCP (run the game and read the console)
     .env.example        template for the local settings (Godot path)
     requirements.txt    pinned gdtoolkit version
     docs/               project memory: status, architecture, systems, decisions
-    scripts/            check.mjs (verification pipeline) and the steps it calls
+    scripts/            check.mjs (verification pipeline) and the steps it calls; auditoria.mjs (review prep)
     test/               gdUnit4 tests (unit/ and scenes/)
     addons/gdUnit4/     gdUnit4 6.2.0
 ```
