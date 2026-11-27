@@ -12,7 +12,8 @@ Template for **Godot 4.7 + GDScript** games, ready to work with AI agents (Claud
 godot-template/
   README.md             this guide (replaced by setup)
   LEIA-ME.md            Portuguese guide (removed by setup)
-  COLABORAR-SEM-IA.md   collaborator guide without an AI agent (Portuguese)
+  COLABORAR-SEM-IA-WINDOWS.md  collaborator guide without an AI agent, Windows (Portuguese)
+  COLABORAR-SEM-IA-LINUX.md    the same guide for Linux (Portuguese)
   setup.mjs             applies the game name (deletes itself)
   game.code-workspace   VS Code workspace: "Jogo" and "Notas" folders
   .gitattributes        same line endings on Windows and Linux
@@ -133,7 +134,7 @@ For someone contributing to another person's project (decision `0014`; rules in 
 6. Run `/fim`: the agent updates the mission, runs the check, pushes the branch to your fork and hands you the pull request text.
 7. On GitHub, open the pull request from your fork to the original `main`. CI runs the check on Linux.
 
-**Without an AI agent** (decision `0016`): follow [COLABORAR-SEM-IA.md](COLABORAR-SEM-IA.md). The same steps run as scripts inside `game/`: `node scripts/configurar.mjs` once, then `node scripts/colaborar.mjs` (guided: asks the mission, creates the branch and commits the mission) and, at the end, `node scripts/fim-colaborador.mjs` (check, mission update, push to the fork and pull request text). Both paths mix: a branch started by hand can be finished by an agent, and vice versa.
+**Without an AI agent** (decision `0016`): follow the guide for [Windows](COLABORAR-SEM-IA-WINDOWS.md) or [Linux](COLABORAR-SEM-IA-LINUX.md). The same steps run as scripts inside `game/`: `node scripts/configurar.mjs` once, then `node scripts/colaborar.mjs` (guided: asks the mission, creates the branch and commits the mission) and, at the end, `node scripts/fim-colaborador.mjs` (check, mission update, push to the fork and pull request text). Both paths mix: a branch started by hand can be finished by an agent, and vice versa.
 
 ## Integrating contributions (owner)
 

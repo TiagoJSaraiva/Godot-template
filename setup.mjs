@@ -73,7 +73,7 @@ console.log(`OK: workspace ${slug}.code-workspace`);
 // 3. README.md e LEIA-ME.md do modelo são guias de setup; o projeto novo começa com um README próprio.
 writeFileSync(
     join(root, "README.md"),
-    `# ${name}\n\n## Colaborar\n\nContribuições por fork e pull request. Com agente de IA: \`/configurar\`, \`/colaborar\` e \`/fim\`, dentro de \`game/\`. Sem agente: [COLABORAR-SEM-IA.md](COLABORAR-SEM-IA.md).\n`,
+    `# ${name}\n\n## Colaborar\n\nContribuições por fork e pull request. Com agente de IA: \`/configurar\`, \`/colaborar\` e \`/fim\`, dentro de \`game/\`. Sem agente: guia para [Windows](COLABORAR-SEM-IA-WINDOWS.md) ou [Linux](COLABORAR-SEM-IA-LINUX.md).\n`,
     "utf8",
 );
 console.log("OK: README.md do projeto criado");
