@@ -10,6 +10,7 @@ Modelo para jogos em **Godot 4.7 + GDScript**, pronto para trabalhar com agentes
 godot-template/
   README.md             este guia em inglês (substituído pelo setup)
   LEIA-ME.md            este guia (removido pelo setup)
+  COLABORAR-SEM-IA.md   guia do colaborador sem agente de IA
   setup.mjs             aplica o nome do jogo (remove a si mesmo)
   game.code-workspace   workspace do VS Code: pastas "Jogo" e "Notas"
   .gitattributes        finais de linha iguais em Windows e Linux
@@ -129,6 +130,8 @@ Para quem contribui com o projeto de outra pessoa (decisão `0014`; regras na se
 5. Trabalhe normalmente (`/planejar`, implementação). Uma branch tem **um propósito**: o agente alerta quando um pedido não cabe na missão, e o check reprova commit de outro tipo (ex.: `feat` numa `fix/`) e alteração em arquivo protegido (memória compartilhada, instruções, ferramentas, addons).
 6. Rode `/fim`: o agente atualiza a missão, roda o check, envia a branch para o seu fork e entrega o texto do pull request.
 7. No GitHub, abra o pull request do seu fork para a `main` do original. O CI roda o check em Linux.
+
+**Sem agente de IA** (decisão `0016`): siga o [COLABORAR-SEM-IA.md](COLABORAR-SEM-IA.md). Os mesmos passos rodam como scripts dentro de `game/`: `node scripts/configurar.mjs` uma vez; depois `node scripts/colaborar.mjs` (guiado: pergunta a missão, cria a branch e faz o commit da missão) e, no fim, `node scripts/fim-colaborador.mjs` (check, atualização da missão, envio para o fork e texto do pull request). Os dois caminhos se misturam: uma branch começada à mão pode ser terminada pelo agente, e vice-versa.
 
 ## Integrar contribuições (dono)
 
